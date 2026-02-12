@@ -35,7 +35,7 @@
  *      - Agar thalis array nahi hai ya empty hai, return null
  *
  *   3. searchThaliMenu(thalis, query)
- *      - .filter() + .includes() se search karo (case-insensitive)
+ *      - .filter() + .includes() se search if(karo (case-insensitive)
  *      - Thali match karti hai agar name ya koi bhi item query include kare
  *      - Agar thalis array nahi hai ya query string nahi hai, return []
  *      - Example: searchThaliMenu(thalis, "dal") => thalis with "dal" in name or items
@@ -54,16 +54,54 @@
  */
 export function createThaliDescription(thali) {
   // Your code here
+  const { name, items, price, isVeg } = thali;
+  if (
+    typeof name !== "string" ||
+    !Array.isArray(items) ||
+    typeof price !== "number" ||
+    typeof isVeg !== "boolean" ||
+    thali === null ||
+    typeof thali !== "object"
+  ) {
+    return ""
+  }
+  let vegStatus = isVeg
+  if(isVeg){
+vegStatus = "Veg"
+  } else {
+    vegStatus = "Non-Veg"
+  }
+
+  return `${name.toUpperCase()} (${vegStatus}) - Items: ${items.join(", ")} - Rs.${price.toFixed(2)}`
 }
 
 export function getThaliStats(thalis) {
   // Your code here
+if(!Array.isArray(thalis) || thalis.length === 0){
+  return null
+}
+
+ let vegAndNonVeg = thalis.filter( thali => thali.isVeg)
+
 }
 
 export function searchThaliMenu(thalis, query) {
   // Your code here
+  if(!Array.isArray(thalis) || thalis.length === 0 || typeof query !== "string"){
+  return []
+}
+ return thalis.filter(thali => 
+    thali.name.lowerCase() === thali.query.lowerCase() ||
+    thali.items.includes(query)
+  )
 }
 
 export function generateThaliReceipt(customerName, thalis) {
   // Your code here
+   if(!Array.isArray(thalis) || thalis.length === 0 || typeof customerName !== "string"){
+  return ""
+}
+thalis.map(thali => 
+ `THALI RECEIPT\n---\nCustomer: ${customerName.toUpperCase()}\n${thali.name} x Rs.${thali.price}\n---\nTotal: Rs.{total}\nItems: {count}`
+).reduce()
 }
